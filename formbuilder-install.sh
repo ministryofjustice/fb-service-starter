@@ -1,44 +1,67 @@
 #!/usr/bin/env bash
 
-NODEMINVERSION="10.6.0"
-NODE=$(which node)
-NVM=$(which nvm)
-BREW=$(which brew)
-
-if [ "$NVM" != "" ]; then
-  NODEVERSION=$(node --version)
-  if [ "$NODEVERSION" = "$NODEMINVERSION" ]; then
-    echo "Please use nvm to install Node $NODEMINVERSION or higher"
-    exit 1
-  else
-    echo "You alredy have nvm and a sufficient version of Node installed"
-  fi
-  exit 0
-fi
-
-if [ "$NODE" != "" ]; then
-  NODEVERSION=$(node --version)
-  if [ "$NODEVERSION" = "$NODEMINVERSION" ]; then
-    # echo "You already have Node installed but not a sufficient version.\n\nDo yu want to install nvm to manage your Node versions"
-    # select yn in "Yes" "No"; do
-    #   case $yn in
-    #     Yes ) echo "Carrying on"; break;;
-    #     No ) exit;;
-    #   esac
-    # done
-  else
-    echo "You already have a sufficient version of Node installed.\n\nConsider using a Node version manager like nvm"
-    exit 0
-  fi
-fi
-
-if [ "$BREW" = "" ]; then
-  if [ -d "/usr/local/Cellar" ]; then
-    echo "\nIt looks like brew has already been installed on this machine\n"
-  fi
-  echo "Installing brew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+SCRIPTDIR=$(dirname "$0")
+if [ "$SCRIPTDIR" = "." ]; then
+  SCRIPTDIR=$(pwd)
 else
-  echo "Homebrew already installed"
+  SCRIPTDIR=$(pwd)/$SCRIPTDIR
 fi
 
+echo "\n\nDo you want to create a formbuilder directory in your home directory?\n\n"
+select fbDirectory in "Yes" "No"; do
+  case $fbDirectory in
+    Yes ) USEFBDEFAULTS="yes"; mkdir -p ~/formbuilder; cd ~/formbuilder; break;;
+    No ) break;;
+  esac
+done
+
+CURRENTDIR=$(pwd)
+
+if [ "$USEFBDEFAULTS" = "yes" ]; then
+  EDITORLOCATION=$CURRENTDIR
+  REPOLOCATION=$CURRENTDIR
+else
+  read -p "
+Where do you want to install the Form Builder editor code?
+<return> to use current directory ($CURRENTDIR)
+-------------------------------------------------------------------
+> " EDITORLOCATION
+
+  if [ "$EDITORLOCATION" = "" ]; then
+    EDITORLOCATION=$CURRENTDIR
+  fi
+
+  read -p "
+Where do you want to create your service repository?
+<return> to use current directory ($CURRENTDIR)
+-------------------------------------------------------------------
+> " REPOLOCATION
+
+  if [ "$REPOLOCATION" = "" ]; then
+    REPOLOCATION=$CURRENTDIR
+  fi
+
+fi
+
+echo "\nHave you already made your new repo?"
+select yn in "Yes" "No"; do
+  case $yn in
+    Yes ) break;;
+    No ) echo "\nPlease make your repo and start again\n"; exit;;
+  esac
+done
+
+read -p "
+What is your repo's address?
+-------------------------------------------------------------------
+> " REPOADDRESS
+
+REPODIR="${REPOADDRESS//.git}"
+REPODIR=$(sed s/.*\\///g <<<$REPODIR)
+
+
+sh $SCRIPTDIR/node-install.sh && source ~/.bash_profile && sh $SCRIPTDIR/editor-install.sh $EDITORLOCATION && sh $SCRIPTDIR/duplicate-repository.sh $REPOLOCATION $REPOADDRESS
+
+SERVICEDATA=$REPOLOCATION/$REPODIR
+# need to get repo name back
+echo "Kill this window and open a new one\n\ncd $EDITORLOCATION/fb-editor-node\n\nSERVICEDATA=$SERVICEDATA npm start"
