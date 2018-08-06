@@ -1,7 +1,7 @@
 {
   "_id": "pageStart",
   "_type": "page.start",
-  "body": "Links and explanations to go here.",
+  "body": "- [Edit this page](/instance)\r\n- [Flow view](/flow)\r\n- [Admin page](/admin)",
   "heading": "Welcome to Form Builder",
   "steps": [],
   "url": "/"
