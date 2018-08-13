@@ -1,0 +1,8 @@
+{
+  "_id": "page.start",
+  "_type": "page.start",
+  "body": "Edit this page to create your own start page:\r\n\r\n1. Click 'Edit this page' below\r\n2. In the editor, click 'Heading' and enter your own heading\r\n3. Click 'Content properties' > 'Content' and replace the content with your own\r\n\r\nYou can edit all your service's pages from the Form Builder Dashboard or see how your pages link together in Flow view.\r\n\r\n- [Edit this page](/instance)\r\n- [Flow view](/flow)\r\n- [Admin page](/admin)\r\n\r\nFrom any page, clicking on the GOV.UK link (top left) will bring you back to this start page.\r\n\r\nIn the editor screens, clicking on the 'Form Builder Dashboard' link (top centre) will take you to the dashboard.",
+  "heading": "Welcome to Form Builder",
+  "steps": [],
+  "url": "/"
+}
