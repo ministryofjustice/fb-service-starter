@@ -1,7 +1,7 @@
 {
   "_id": "page.start",
   "_type": "page.start",
-  "body": "[Edit this page](instance) with content for your own service.\r\n\r\nYou can tell it's a start page because of the green start button below – it's added automatically.",
+  "body": "[Edit this page](/edit) with content for your own service.\r\n\r\nYou can tell it's a start page because of the green start button below – it's added automatically.",
   "heading": "This is your start page",
   "steps": [],
   "url": "/"
